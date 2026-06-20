@@ -592,7 +592,6 @@ document.getElementById('download-btn').addEventListener('click', function (e) {
   // Generate PDF using jsPDF
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'pt', format: 'a4' });
-
   const pageWidth = doc.internal.pageSize.getWidth();
   const margin = 50;
   let y = 70;
@@ -660,6 +659,37 @@ document.getElementById('download-btn').addEventListener('click', function (e) {
     y += 18;
     doc.text(`${i + 1}.  ${step}`, margin + 10, y);
   });
+
+  // ─── DOWNLOAD BUTTON (clickable, inside PDF) ───────────────────────
+  y += 35;
+
+  const buttonWidth = 200;
+  const buttonHeight = 36;
+  const buttonX = (pageWidth - buttonWidth) / 2; // centered
+  const buttonY = y;
+
+  // Draw button background
+  doc.setFillColor('#237A3F');
+  doc.roundedRect(buttonX, buttonY, buttonWidth, buttonHeight, 6, 6, 'F');
+
+  // Button text
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(12);
+  doc.setTextColor('#FFFFFF');
+  doc.text('Download Your Planner', pageWidth / 2, buttonY + 23, { align: 'center' });
+
+  // Make the button area clickable
+  doc.link(buttonX, buttonY, buttonWidth, buttonHeight, {
+    url: 'https://shorturl.at/1mTdp'
+  });
+
+  y = buttonY + buttonHeight + 10;
+
+  // Small note below button
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor('#888888');
+  doc.text('Tap the button above to download your files', pageWidth / 2, y, { align: 'center' });
 
   // Footer
   const footerY = doc.internal.pageSize.getHeight() - 40;
